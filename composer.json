@@ -3,7 +3,6 @@
     "description": "SMG",
     "require": {
         "laravel/framework": "~5.1",
-        "symfony/yaml": "~2.7",
         "symfony/filesystem": "~2.7",
         "symfony/finder": "~2.7"
     },
