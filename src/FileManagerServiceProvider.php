@@ -10,7 +10,8 @@ use Symfony\Component\Yaml\Yaml;
 class FileManagerServiceProvider extends Serviceprovider {
 
     public function boot() {
-        $this->loadConfiguration();
+        $this->loadConfiguration()
+            ->loadViews();
     }
 
     /**
@@ -45,6 +46,21 @@ class FileManagerServiceProvider extends Serviceprovider {
         $config = $this->app['config']->get('file-manager', []);
 
         $this->app['config']->set('file-manager', array_merge($array, $config));
+
+        return $this;
+    }
+
+    /**
+     * Load views.
+     *
+     * @return $this
+     */
+    protected function loadViews() {
+        $this->loadViewsFrom(__DIR__ . '/../views', 'file-manager');
+
+        $this->publishes([
+            __DIR__ . '/../views' => base_path('resources/views/vendor/administrator'),
+        ]);
 
         return $this;
     }

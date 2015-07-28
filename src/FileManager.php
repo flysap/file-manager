@@ -8,6 +8,8 @@ use Symfony\Component\Finder\Finder;
 
 class FileManager {
 
+    const VIEW_PATH = 'views';
+
     /**
      * @var Filesystem
      */
@@ -122,9 +124,6 @@ class FileManager {
      * @throws Exceptions\FileManagerException
      */
     public function setView($path) {
-        if(! $this->fileSystem->exists($path))
-            throw new FileManagerException(_("Invalid view path."));
-
         $this->view = $path;
 
         return $this;
@@ -152,7 +151,7 @@ class FileManager {
             $files = $this->files();
 
         return view(
-            $this->getView(), compact('files')
+            'file-manager:' . $this->getView(), compact('files')
         );
     }
 
