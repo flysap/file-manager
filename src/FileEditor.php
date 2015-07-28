@@ -28,6 +28,11 @@ class FileEditor {
      */
     protected $editor;
 
+    /**
+     * @var
+     */
+    protected $content;
+
     public function __construct(FileSystem $fileSystem, Finder $finder) {
 
         $this->fileSystem = $fileSystem;
@@ -99,5 +104,40 @@ class FileEditor {
 
     public function __toString() {
         return $this->render();
+    }
+
+    /**
+     * Set content .
+     *
+     * @param $contents
+     * @return $this
+     */
+    public function setContent($contents) {
+        $this->content = $contents;
+
+        return $this;
+    }
+
+    /**
+     * Get content .
+     *
+     * @return mixed
+     */
+    public function getContents() {
+        return $this->content;
+    }
+
+    /**
+     * Update file
+     *
+     * @param $path
+     * @throws Exceptions\FileEditorException
+     */
+    public function update($path) {
+        if(! $this->fileSystem->exists($path))
+            throw new FileEditorException(_("Invalid path."));
+
+        return $this->fileSystem
+            ->dumpFile($path, $this->getContents());
     }
 }
