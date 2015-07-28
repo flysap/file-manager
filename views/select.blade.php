@@ -1,4 +1,11 @@
-<?php
+<form method="get">
+    <select name="file">
+        @foreach($files as $file)
+        <option value="{{$file->getRelativePathname()}}">
+            {{$file->getRelativePathname()}}
+        </option>
+        @endforeach
+    </select>
 
-dd($files);
-?>
+    <input type="button" value="{{_('Load')}}">
+</form>
