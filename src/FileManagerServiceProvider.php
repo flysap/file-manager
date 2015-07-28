@@ -24,6 +24,12 @@ class FileManagerServiceProvider extends Serviceprovider {
                new Filesystem(), new Finder()
            );
         });
+
+        $this->app->singleton('file-editor', function() {
+            return new FileEditor(
+                new Filesystem(), new Finder()
+            );
+        });
     }
 
     /**
