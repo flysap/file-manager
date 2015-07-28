@@ -45,7 +45,7 @@ class FileManager {
      */
     public function setPath($path) {
         if(! $this->fileSystem->isAbsolutePath($path))
-            throw new FileManagerException(_("Invalid path"));
+            #throw new FileManagerException(_("Invalid path"));
 
         $this->path = $path;
 
@@ -75,7 +75,7 @@ class FileManager {
         if( is_null($path))
             throw new FileManagerException(_("Invalid path"));
 
-        $this->finder->in(app_path('../') . DIRECTORY_SEPARATOR . $this->getPath())
+        $this->finder->in(app_path('../') . DIRECTORY_SEPARATOR . $path)
             ->ignoreDotFiles(Finder::IGNORE_DOT_FILES);
 
         return $this;
@@ -92,7 +92,7 @@ class FileManager {
         $this->prepare($path);
 
         $files = [];
-        foreach($this->finder->files()as $file)
+        foreach($this->finder->files() as $file)
             $files[] = $file;
 
         return $files;
@@ -147,11 +147,13 @@ class FileManager {
         if(! $this->getView())
             throw new FileManagerException(_("Invalid view path."));
 
-        if( ! $files )
-            $files = $this->files();
+        if( ! $files ) {
+            foreach($this->files() as $file)
+                $files[] = $file;
+        }
 
         return view(
-            'file-manager:' . $this->getView(), compact('files')
+            'file-manager::' . $this->getView(), compact('files')
         );
     }
 

@@ -13,7 +13,7 @@ function listFiles($path, $view) {
     $fileManager = app('file-manager');
 
     return $fileManager
-        ->setPath(app_path('../' . $path))
+        ->setPath($path)
         ->setView($view)
         ->render();
 }
