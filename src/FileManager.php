@@ -74,12 +74,13 @@ class FileManager {
      * List files .
      *
      * @param null $path
+     * @return Finder
      * @throws FileManagerException
      */
-    public function getFiles($path = null) {
+    public function files($path = null) {
         $this->prepare($path);
 
-        return $this->finder->getFiles();
+        return $this->finder->files();
     }
 
     /**
@@ -89,10 +90,10 @@ class FileManager {
      * @return mixed
      * @throws FileManagerException
      */
-    public function getDirectories($path = null) {
+    public function directories($path = null) {
         $this->prepare($path);
 
-        return $this->finder->getDirectories();
+        return $this->finder->directories();
     }
 
 }
