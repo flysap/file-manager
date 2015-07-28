@@ -6,6 +6,14 @@ use Flysap\FileManager\Exceptions\FileManagerException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
+/**
+ * Add function to follow links folders ..
+ *
+ *  public function followLinks()
+ *
+ * Class FileManager
+ * @package Flysap\FileManager
+ */
 class FileManager {
 
     /**
@@ -80,7 +88,11 @@ class FileManager {
     public function files($path = null) {
         $this->prepare($path);
 
-        return $this->finder->files();
+        $files = [];
+        foreach ($this->finder->files() as $file)
+            $files[] = $file;
+
+        return $files;
     }
 
     /**
@@ -93,7 +105,11 @@ class FileManager {
     public function directories($path = null) {
         $this->prepare($path);
 
-        return $this->finder->directories();
+        $files = [];
+        foreach ($this->finder->directories() as $file)
+            $files[] = $file;
+
+        return $files;
     }
 
 }
