@@ -23,6 +23,11 @@ class FileManager {
      */
     protected $path;
 
+    /**
+     * @var
+     */
+    protected $view;
+
     public function __construct(FileSystem $fileSystem, Finder $finder) {
 
         $this->fileSystem = $fileSystem;
@@ -33,9 +38,13 @@ class FileManager {
      * Set path .
      *
      * @param $path
+     * @throws Exceptions\FileManagerException
      * @return $this
      */
     public function setPath($path) {
+        if(! $this->fileSystem->isAbsolutePath($path))
+            throw new FileManagerException(_("Invalid path"));
+
         $this->path = $path;
 
         return $this;
@@ -80,7 +89,11 @@ class FileManager {
     public function files($path = null) {
         $this->prepare($path);
 
-        return $this->finder->files();
+        $files = [];
+        foreach($this->finder->files()as $file)
+            $files[] = $file;
+
+        return $files;
     }
 
     /**
@@ -93,7 +106,63 @@ class FileManager {
     public function directories($path = null) {
         $this->prepare($path);
 
-        return $this->finder->directories();
+        $directories = [];
+        foreach($this->finder->directories()as $directory)
+            $directories[] = $directory;
+
+        return $directories;
+    }
+
+
+    /**
+     * Set view .
+     *
+     * @param $path
+     * @return $this
+     * @throws Exceptions\FileManagerException
+     */
+    public function setView($path) {
+        if(! $this->fileSystem->exists($path))
+            throw new FileManagerException(_("Invalid view path."));
+
+        $this->view = $path;
+
+        return $this;
+    }
+
+    /**
+     * Get view .
+     *
+     * @return mixed
+     */
+    public function getView() {
+        return $this->view;
+    }
+
+    /**
+     * Render list ..
+     *
+     * @throws Exceptions\FileManagerException
+     */
+    public function render($files = null) {
+        if(! $this->getView())
+            throw new FileManagerException(_("Invalid view path."));
+
+        if( ! $files )
+            $files = $this->files();
+
+        return view(
+            $this->getView(), compact('files')
+        );
+    }
+
+    /**
+     * Render files .
+     *
+     * @return \Illuminate\View\View
+     */
+    public function __toString() {
+        return $this->render();
     }
 
 }
