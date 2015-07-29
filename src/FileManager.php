@@ -3,10 +3,13 @@
 namespace Flysap\FileManager;
 
 use Flysap\FileManager\Exceptions\FileManagerException;
+use Flysap\Support\Traits\ElementAttributes;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 class FileManager {
+
+    use ElementAttributes;
 
     const VIEW_PATH = 'views';
 
@@ -106,7 +109,7 @@ class FileManager {
         $this->prepare($path);
 
         $directories = [];
-        foreach($this->finder->directories()as $directory)
+        foreach($this->finder->directories() as $directory)
             $directories[] = $directory;
 
         return $directories;
@@ -146,13 +149,13 @@ class FileManager {
         if(! $this->getView())
             throw new FileManagerException(_("Invalid view path."));
 
-        if( ! $files ) {
-            foreach($this->files() as $file)
-                $files[] = $file;
-        }
+        if( ! $files )
+            $files = $this->files();
+
+        $attributes = $this->getAttributes();
 
         return view(
-            'file-manager::' . $this->getView(), compact('files')
+            'file-manager::' . $this->getView(), compact('files', 'attributes')
         );
     }
 

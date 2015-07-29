@@ -3,10 +3,13 @@
 namespace Flysap\FileManager;
 
 use Flysap\FileManager\Exceptions\FileEditorException;
+use Flysap\Support\Traits\ElementAttributes;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
 class FileEditor {
+
+    use ElementAttributes;
 
     const DEFAULT_EDITOR = 'codemirror';
 
@@ -106,7 +109,12 @@ class FileEditor {
             $this->getFile()
         );
 
-        return view('file-manager::editors.' . $editor . '.edit', compact('contents'));
+        if(! $this->getAttribute('active_theme'))
+            $this->setAttribute('active_theme', 'dracula');
+
+        $attributes = $this->getAttributes();
+
+        return view('file-manager::editors.' . $editor . '.edit', compact('contents', 'attributes'));
     }
 
     public function __toString() {
