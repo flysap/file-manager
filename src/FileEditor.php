@@ -8,6 +8,8 @@ use Symfony\Component\Finder\Finder;
 
 class FileEditor {
 
+    const DEFAULT_EDITOR = 'codemirror';
+
     /**
      * @var Filesystem
      */
@@ -47,6 +49,8 @@ class FileEditor {
      * @throws Exceptions\FileEditorException
      */
     public function setFile($file) {
+        $file = app_path('../' . $file);
+
         if(! $this->fileSystem->exists($file))
             throw new FileEditorException(_("Invalid file path"));
 
@@ -95,11 +99,14 @@ class FileEditor {
         if(! $this->getFile())
             throw new FileEditorException(_("Please set file"));
 
+        if(! $editor = $this->getEditor())
+            $editor = self::DEFAULT_EDITOR;
+
         $contents = file_get_contents(
             $this->getFile()
         );
 
-        return $contents;
+        return view('file-manager::editors.' . $editor . '.edit', compact('contents'));
     }
 
     public function __toString() {
@@ -134,6 +141,8 @@ class FileEditor {
      * @throws Exceptions\FileEditorException
      */
     public function update($path) {
+        $path = app_path('../' . $path);
+
         if(! $this->fileSystem->exists($path))
             throw new FileEditorException(_("Invalid path."));
 
