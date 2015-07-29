@@ -7,14 +7,16 @@ namespace Flysap\FileManager;
  *
  * @param $path
  * @param $view
+ * @param array $attributes
  * @return mixed
  */
-function listFiles($path, $view) {
+function listFiles($path, $view, $attributes = array()) {
     $fileManager = app('file-manager');
 
     return $fileManager
         ->setPath($path)
         ->setView($view)
+        ->setAttributes($attributes)
         ->render();
 }
 
@@ -22,13 +24,15 @@ function listFiles($path, $view) {
  * Edit file ..
  *
  * @param $file
+ * @param array $attributes
  * @return mixed
  */
-function editFile($file) {
+function editFile($file, $attributes = array()) {
     $fileManager = app('file-editor');
 
     return $fileManager
         ->setFile($file)
+        ->setAttributes($attributes)
         ->render();
 }
 
