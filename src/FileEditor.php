@@ -72,6 +72,23 @@ class FileEditor {
     }
 
     /**
+     * Get raw file .
+     *
+     * @return string
+     * @throws FileEditorException
+     */
+    public function getRawFile() {
+        if(! $this->getFile())
+            throw new FileEditorException(_("Please set file"));
+
+        $contents = file_get_contents(
+            $this->getFile()
+        );
+
+        return $contents;
+    }
+
+    /**
      * Set editor .
      *
      * @param $editor
@@ -91,6 +108,7 @@ class FileEditor {
     public function getEditor() {
         return $this->editor;
     }
+
 
     /**
      * Render .
