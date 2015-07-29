@@ -28,12 +28,26 @@ function listFiles($path, $view, $attributes = array()) {
  * @return mixed
  */
 function editFile($file, $attributes = array()) {
-    $fileManager = app('file-editor');
+    $fileEditor = app('file-editor');
 
-    return $fileManager
+    return $fileEditor
         ->setFile($file)
         ->setAttributes($attributes)
         ->render();
+}
+
+/**
+ * Get raw file ..
+ *
+ * @param $file
+ * @return mixed
+ */
+function getFile($file) {
+    $fileEditor = app('file-editor');
+
+    return $fileEditor
+        ->setFile($file)
+        ->getRawFile();
 }
 
 /**
@@ -44,9 +58,9 @@ function editFile($file, $attributes = array()) {
  * @return mixed
  */
 function updateFile($file, $contents) {
-    $fileManager = app('file-editor');
+    $fileEditor = app('file-editor');
 
-    return $fileManager
+    return $fileEditor
         ->setContent($contents)
         ->update($file);
 }
