@@ -44,9 +44,6 @@ class FileManager {
      * @return $this
      */
     public function setPath($path) {
-        if(! $this->fileSystem->isAbsolutePath($path))
-            #throw new FileManagerException(_("Invalid path"));
-
         $this->path = $path;
 
         return $this;
@@ -141,7 +138,9 @@ class FileManager {
     /**
      * Render list ..
      *
-     * @throws Exceptions\FileManagerException
+     * @param null $files
+     * @return \Illuminate\View\View
+     * @throws FileManagerException
      */
     public function render($files = null) {
         if(! $this->getView())
