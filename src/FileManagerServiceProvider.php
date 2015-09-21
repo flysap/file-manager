@@ -5,7 +5,7 @@ namespace Flysap\FileManager;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Yaml\Yaml;
+use Flysap\Support;
 
 class FileManagerServiceProvider extends Serviceprovider {
 
@@ -20,10 +20,6 @@ class FileManagerServiceProvider extends Serviceprovider {
      * @return void
      */
     public function register() {
-        $this->app->singleton('file-service', function() {
-            return new FileService;
-        });
-
         $this->app->singleton('file-manager', function() {
            return new FileManager(
                new Filesystem(), new Finder()
@@ -43,13 +39,9 @@ class FileManagerServiceProvider extends Serviceprovider {
      * @return $this
      */
     protected function loadConfiguration() {
-        $array = Yaml::parse(file_get_contents(
-            __DIR__ . '/../configuration/general.yaml'
-        ));
-
-        $config = $this->app['config']->get('file-manager', []);
-
-        $this->app['config']->set('file-manager', array_merge($array, $config));
+        Support\set_config_from_yaml(
+            __DIR__ . '/../configuration/general.yaml' , 'file-manager'
+        );
 
         return $this;
     }
