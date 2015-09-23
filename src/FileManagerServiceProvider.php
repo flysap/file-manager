@@ -12,6 +12,10 @@ class FileManagerServiceProvider extends Serviceprovider {
     public function boot() {
         $this->loadConfiguration()
             ->loadViews();
+
+        $this->publishes([
+            __DIR__.'/../configuration' => config_path('yaml/file-manager'),
+        ]);
     }
 
     /**
@@ -41,6 +45,10 @@ class FileManagerServiceProvider extends Serviceprovider {
     protected function loadConfiguration() {
         Support\set_config_from_yaml(
             __DIR__ . '/../configuration/general.yaml' , 'file-manager'
+        );
+
+        Support\merge_yaml_config_from(
+            config_path('yaml/file-manager/general.yaml') , 'file-manager'
         );
 
         return $this;
